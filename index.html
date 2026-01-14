@@ -4,6 +4,7 @@
 	<title>Hello, AR Cubes!</title>
 	<!-- include three.js library -->
 	<script src='js/three.js'></script>
+	<script src="js/GLTFLoader.js"></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -118,12 +119,19 @@ function initialize()
 			type : 'pattern', patternUrl : "data/" + patternArray[i] + ".patt",
 		});
 	
-		let mesh = new THREE.Mesh( 
-			new THREE.CubeGeometry(1.25,1.25,1.25), 
-			new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5}) 
-		);
-		mesh.position.y = 1.25/2;
-		markerRoot.add( mesh );
+let gltfLoader = new THREE.GLTFLoader();
+
+gltfLoader.load('models/laptop.glb', function (gltf)
+{
+  let model = gltf.scene;
+
+  model.scale.set(1, 1, 1);   // подгони размер
+  model.position.y = 0.0;           // подгони высоту
+  model.rotation.x = -Math.PI / 2;  // если модель лежит
+
+  markerRoot.add(model);
+});
+
 	}
 }
 
@@ -154,4 +162,5 @@ function animate()
 </script>
 
 </body>
+
 </html>
